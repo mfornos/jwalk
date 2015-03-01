@@ -11,6 +11,7 @@ Makefile
 /config
 /src/jwalk
 /tests/check_jwalk
+/doc
 .dirstamp
 aclocal.m4
 app.info

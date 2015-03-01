@@ -1,0 +1,9 @@
+/*! \mainpage JSON Walker
+
+Print matching values from a JSON input for a given path expression. 
+
+\section summary_sec Summary
+
+Jwalk extracts JSON values (literals, strings and array values) from standard input or a named file, matching a given expression. Matched values are printed to standard output concatenated by a character delimiter, using new line by default.
+
+*/
