@@ -10,6 +10,7 @@ Makefile
 /stamp-h1
 /config
 /src/jwalk
+/tests/check_jwalk
 .dirstamp
 aclocal.m4
 app.info
