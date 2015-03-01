@@ -3,4 +3,4 @@ install: ./autogen.sh
 script: ./configure && make && make check
 compiler:
   - gcc
-
+  - clang
