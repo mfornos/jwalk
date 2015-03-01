@@ -16,8 +16,8 @@
 */
 /*! \file main.c
     \brief The jwalk commandline interface.
-    
-    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file, 
+
+    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file,
     matching a given expression. Matched values are printed to standard output concatenated by a character
     delimiter, using new line by default.
 */
@@ -56,7 +56,6 @@ int main(int argc, char **argv)
     if (argc < MIN_ARGS_REQUIRED) {
         usage();
     }
-    
     static struct option long_options[] =
     {
         {"help", optional_argument, 0, 'h'},

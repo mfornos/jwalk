@@ -16,8 +16,8 @@
 */
 /*! \file jwalk.h
     \brief The jwalk interface.
-    
-    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file, 
+
+    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file,
     matching a given expression. Matched values are printed to standard output concatenated by a character
     delimiter, using new line by default.
 */
@@ -39,11 +39,11 @@ typedef struct json_walker_s {
 } json_walker_t;
 
 /*! \brief Prints matching values from a JSON input for a given path expression.
- * 
- * Prints JSON values (literals, strings and array values) matching the given expression. 
+ *
+ * Prints JSON values (literals, strings and array values) matching the given expression.
  * Matched values are printed to standard output concatenated by the specified
  * delimiter.
- * 
+ *
  * \param filename the file name containing the JSON data. If NULL standard input will be used.
  * \param delimiter the delimiter to concatenate output values.
  * \param path_expr the path traversal expression.
@@ -53,7 +53,7 @@ typedef struct json_walker_s {
 int json_walk(const char *filename, char delimiter, const char *path_expr);
 
 /*! \brief Gets the underlying JSON walker.
- * 
+ *
  * Gets the underlying JSON walker structure.
  *
  * \return the underlying JSON walker structure.

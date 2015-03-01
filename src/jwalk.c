@@ -16,8 +16,8 @@
 */
 /*! \file jwalk.c
     \brief The jwalk implementation code.
-    
-    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file, 
+
+    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file,
     matching a given expression. Matched values are printed to standard output concatenated by a character
     delimiter, using new line by default.
 */
@@ -35,9 +35,9 @@ static void json_parse_object();
 static void json_match();
 
 /*! \brief Reads a character.
- * 
+ *
  * Reads a character from the underlying input stream.
- * 
+ *
  * \return the next character in the stream.
  */
 static char json_getc()
@@ -46,10 +46,10 @@ static char json_getc()
 }
 
 /*! \brief Unreads the given character.
- * 
+ *
  * Puts the given character in the input stream for
  * reprocessing.
- * 
+ *
  * \param char c the character to be unread.
  */
 static void json_unread(char c)
@@ -58,9 +58,9 @@ static void json_unread(char c)
 }
 
 /*! \brief Prints the given character.
- * 
+ *
  * Prints the given character to the selected stream.
- * 
+ *
  * \param char c the character to be printed.
  */
 static void json_putc(char c)
@@ -69,7 +69,7 @@ static void json_putc(char c)
 }
 
 /*! \brief Prints the delimiter.
- * 
+ *
  * Prints the delimiter if at least one value was printed before.
  */
 static void json_putdelim()
@@ -80,7 +80,7 @@ static void json_putdelim()
 }
 
 /*! \brief Parses JSON string.
- * 
+ *
  * Extracts string values without quotes.
  */
 static void json_parse_string()
@@ -96,7 +96,7 @@ static void json_parse_string()
 }
 
 /*! \brief Parses JSON literals.
- * 
+ *
  * Extracts boolean, numeric and, generally, anything unquoted.
  */
 static void json_parse_literal()
@@ -289,7 +289,7 @@ static void init_json_path(const char *path)
 }
 
 /*! \brief Releases JSON walk allocated resources.
- * 
+ *
  * Releases dynamic allocated paths and matches memory.
  */
 static void json_free()
@@ -302,10 +302,10 @@ static void json_free()
 }
 
 /*! \brief Initializes JSON walk.
- * 
+ *
  * Initializes the structure for a given expression path and
  * stream. Sets new line as default delimiter.
- * 
+ *
  * \param char* path the path expression.
  * \param FILE* the input stream.
  */
@@ -319,15 +319,16 @@ static void json_init(const char *path, FILE * stream)
 }
 
 /*! \brief Gets the underlying JSON walker.
- * 
+ *
  * \sa jwalk.h for details.
  */
-json_walker_t json_walker() {
+json_walker_t json_walker()
+{
     return js;
 }
 
 /*! \brief Prints matching values from a JSON input for a given path expression.
- * 
+ *
  * \sa jwalk.h for details.
  */
 int json_walk(const char *filename, char delimiter, const char *path_expr)
