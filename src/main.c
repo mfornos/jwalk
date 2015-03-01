@@ -15,7 +15,7 @@
     along with JWalk.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*! \file main.c
-    \brief The jwalk commandline interface.
+    \brief The jwalk command-line interface.
 */
 #include <stdlib.h>
 #include <getopt.h>
