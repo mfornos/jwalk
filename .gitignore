@@ -9,6 +9,7 @@ Makefile
 /missing
 /stamp-h1
 /config
+/src/jwalk
 .dirstamp
 aclocal.m4
 app.info
