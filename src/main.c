@@ -16,10 +16,6 @@
 */
 /*! \file main.c
     \brief The jwalk commandline interface.
-
-    JWalk extracts JSON values (literals, strings and array values) from standard input or a named file,
-    matching a given expression. Matched values are printed to standard output concatenated by a character
-    delimiter, using new line by default.
 */
 #include <stdlib.h>
 #include <getopt.h>
