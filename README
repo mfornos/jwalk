@@ -1,0 +1,75 @@
+jwalk - JSON Walker
+===================
+
+Print matching values from a JSON input for a given path expression.
+
+Jwalk extracts JSON values (literals, strings and array values) from standard input or a named file, 
+matching a given expression. Matched values are printed to standard output concatenated by a character
+delimiter, using new line by default.
+
+
+Usage
+-----
+
+    jwalk [--delimiter <char>] [--file <file_name>] <expression>
+
+Examples:
+    jwalk "*.name" < file.json
+    gzcat big.json.gz | ./src/jwalk "*.name"
+
+Options:
+    -d <char>, --delimiter <char>
+     The <char> delimiter that separates collected values; e.g.: -d $'\t'
+    -f <file_name>, --file <file_name>
+     The file name of a file containing JSON text
+    <expression>
+     A path to traverse the JSON tree; e.g.: house.room.name
+
+Notes:
+    'stdin' is the default input stream
+
+Expressions
+-----------
+
+Jwalk supports simple expressions with partial globbing to extract data from a JSON structure.
+
+An expression specifies a path through a JSON object hierarchy. The path is composed by the name 
+of each JSON property to traverse. To specify a path, each property along the route from the root object 
+to the property that holds the target value must be included in the path, with each property in the sequence 
+being separated by a dot.
+
+Side note, there is no aim to support JSON-Path nor XPath syntax. The idea is to keep extraction
+straightforward, as simple as possible, aligned with an evolving set of use cases.
+
+
+Building from source
+--------------------
+
+Autotools are used to ease the building process.
+
+1) Clone jwalk git repository.
+2) Generate make files suited for your system:
+     ./configure
+3) Compile:
+     make
+4) Install jwalk:
+     sudo make install
+
+That's all.
+
+TODO
+----
+
+* Add support for selection of multiple paths and its output concatenation.
+    Example of use: flatten JSON properties with arbitrary nesting to a CSV representation.
+* Expand globbing support for arbitrary tree levels with double asterisk symbol.
+* Improve this README.
+* Add man page.
+* Provide pre-built packages.
+
+
+Curiosities
+-----------
+
+* http://www.urbandictionary.com/define.php?term=j+walk
+
