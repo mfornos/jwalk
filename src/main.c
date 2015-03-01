@@ -33,8 +33,8 @@ void usage(void)
          "\tjwalk \"*.name\" < file.json\n"
          "\tgzcat big.json.gz | ./src/jwalk \"*.name\"\n"
          "Options:\n"
-         "\t-d <char>, --delimiter <char>\n\t The <char> delimiter that separates collected values; e.g.: -d $'\\t'\n"
-         "\t-f <file_name>, --file <file_name>\n\t The file name of a file containing JSON text\n"
+         "\t-d <char>, --delimiter <char>\n\t The <char> delimiter that separates matched values; e.g.: -d $'\\t'\n"
+         "\t-f <file_name>, --file <file_name>\n\t The name of a file containing JSON text\n"
          "\t<expression>\n\t A path to traverse the JSON tree; e.g.: house.room.name\n"
          "Notes:\n"
          "\t'stdin' is the default input stream");
