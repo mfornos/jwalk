@@ -24,7 +24,7 @@ Options:
      A path to traverse the JSON tree; e.g.: house.room.name
 
 Notes:
-    'stdin' is the default input stream
+    'stdin' is the default input source
 
 Expressions
 -----------

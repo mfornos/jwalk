@@ -37,7 +37,7 @@ void usage(void)
          "\t-f <file_name>, --file <file_name>\n\t The name of a file containing JSON text\n"
          "\t<expression>\n\t A path to traverse the JSON tree; e.g.: house.room.name\n"
          "Notes:\n"
-         "\t'stdin' is the default input stream");
+         "\t'stdin' is the default input source");
     exit(EXIT_FAILURE);
 }
 
