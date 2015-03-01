@@ -17,9 +17,9 @@ Examples:
 
 Options:
     -d <char>, --delimiter <char>
-     The <char> delimiter that separates collected values; e.g.: -d $'\t'
+     The <char> delimiter that separates matched values; e.g.: -d $'\t'
     -f <file_name>, --file <file_name>
-     The file name of a file containing JSON text
+     The name of a file containing JSON text
     <expression>
      A path to traverse the JSON tree; e.g.: house.room.name
 
