@@ -3,9 +3,7 @@ jwalk - JSON Walker
 
 Print matching values from a JSON input for a given path expression.
 
-Jwalk extracts JSON values (literals, strings and array values) from standard input or a named file, 
-matching a given expression. Matched values are printed to standard output concatenated by a character
-delimiter, using new line by default.
+Jwalk extracts JSON values (literals, strings and array values) from standard input or a named file, matching a given expression. Matched values are printed to standard output concatenated by a character delimiter, using new line by default.
 
 
 Usage
@@ -33,13 +31,9 @@ Expressions
 
 Jwalk supports simple expressions with partial globbing to extract data from a JSON structure.
 
-An expression specifies a path through a JSON object hierarchy. The path is composed by the name 
-of each JSON property to traverse. To specify a path, each property along the route from the root object 
-to the property that holds the target value must be included in the path, with each property in the sequence 
-being separated by a dot.
+An expression specifies a path through a JSON object hierarchy. The path is composed by the name of each JSON property to traverse. To specify a path, each property along the route from the root object to the property that holds the target value must be included in the path, with each property in the sequence being separated by a dot.
 
-Side note, there is no aim to support JSON-Path nor XPath syntax. The idea is to keep extraction
-straightforward, as simple as possible, aligned with an evolving set of use cases.
+Side note, there is no aim to support JSON-Path nor XPath syntax. The idea is to keep extraction straightforward, as simple as possible, aligned with an evolving set of use cases.
 
 
 Building from source
