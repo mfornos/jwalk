@@ -13,7 +13,7 @@ Usage
 
 Examples:
     jwalk "*.name" < file.json
-    gzcat big.json.gz | ./src/jwalk "*.name"
+    gzcat big.json.gz | jwalk "*.name"
 
 Options:
     -d <char>, --delimiter <char>

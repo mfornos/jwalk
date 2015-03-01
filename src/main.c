@@ -31,7 +31,7 @@ void usage(void)
     "\tjwalk [--delimiter <char>] [--file <file_name>] <expression>\n"
          "Examples:\n"
          "\tjwalk \"*.name\" < file.json\n"
-         "\tgzcat big.json.gz | ./src/jwalk \"*.name\"\n"
+         "\tgzcat big.json.gz | jwalk \"*.name\"\n"
          "Options:\n"
          "\t-d <char>, --delimiter <char>\n\t The <char> delimiter that separates matched values; e.g.: -d $'\\t'\n"
          "\t-f <file_name>, --file <file_name>\n\t The name of a file containing JSON text\n"
