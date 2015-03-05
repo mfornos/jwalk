@@ -19,6 +19,8 @@
 */
 #include <stdio.h>
 
+#define VERSION "0.0.1"
+
 /*! \brief JSON Walker structure.
  *
  *  Holds the configuration and state to traverse a JSON object tree.
@@ -26,6 +28,7 @@
 typedef struct json_walker_s {
     int depth;
     int levels;
+    int offset;
     int count;
     char delimiter;
     FILE *in;

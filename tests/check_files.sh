@@ -4,7 +4,7 @@ sample=assets/outputs/1.out
 check=assets/outputs/1.out.$$
 
 function fail () {
-	rm $check
+	#rm $check
 	exit -1
 }
 

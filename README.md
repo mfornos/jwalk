@@ -5,10 +5,17 @@ Print matching values from a JSON input for a given path expression.
 
 Jwalk extracts JSON values (literals, strings and array values) from standard input or a named file, matching a given expression. Matched values are printed to standard output concatenated by a character delimiter, using new line by default.
 
+[![Build Status](https://travis-ci.org/mfornos/jwalk.svg?branch=master)](https://travis-ci.org/mfornos/jwalk)
+
+Examples
+--------
+
+[TBD]
 
 Usage
 -----
 
+```
     jwalk [--delimiter <char>] [--file <file_name>] <expression>
 
 Examples:
@@ -25,6 +32,7 @@ Options:
 
 Notes:
     'stdin' is the default input source
+```
 
 Expressions
 -----------
@@ -41,26 +49,16 @@ Building from source
 
 Autotools are used to ease the building process.
 
-1) Clone jwalk git repository.
-2) Run autogen.sh
-3) Generate make files suited for your system:
+1. Clone jwalk git repository.
+2. Run autogen.sh
+3. Generate make files suited for your system:
      ./configure
-4) Compile:
+4. Compile:
      make
-5) Install jwalk:
+5. Install jwalk:
      sudo make install
 
 That's all.
-
-TODO
-----
-
-* Add support for selection of multiple paths and its output concatenation.
-    Example of use: flatten JSON properties with arbitrary nesting to a CSV representation.
-* Expand globbing support for arbitrary tree levels with double asterisk symbol.
-* Improve this README.
-* Add man page.
-* Provide pre-built packages.
 
 
 Curiosities

@@ -19,6 +19,7 @@
 */
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include "jwalk.h"
 
@@ -38,7 +39,7 @@ static void json_match();
  */
 static char json_getc()
 {
-    return fgetc(js.in);
+	return fgetc(js.in);
 }
 
 /*! \brief Unreads the given character.
@@ -50,7 +51,7 @@ static char json_getc()
  */
 static void json_unread(char c)
 {
-    ungetc(c, js.in);
+	ungetc(c, js.in);
 }
 
 /*! \brief Prints the given character.
@@ -61,7 +62,7 @@ static void json_unread(char c)
  */
 static void json_putc(char c)
 {
-    putc(c, js.out);
+	putc(c, js.out);
 }
 
 /*! \brief Prints the delimiter.
@@ -70,9 +71,9 @@ static void json_putc(char c)
  */
 static void json_putdelim()
 {
-    if (js.count > 0) {
-        json_putc(js.delimiter);
-    }
+	if (js.count > 0) {
+		json_putc(js.delimiter);
+	}
 }
 
 /*! \brief Parses JSON string.
@@ -81,14 +82,14 @@ static void json_putdelim()
  */
 static void json_parse_string()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        if (c == '\"') {
-            break;
-        } else {
-            json_putc(c);
-        }
-    }
+	char c;
+	while ((c = json_getc()) != EOF) {
+		if (c == '\"') {
+			break;
+		} else {
+			json_putc(c);
+		}
+	}
 }
 
 /*! \brief Parses JSON literals.
@@ -97,23 +98,23 @@ static void json_parse_string()
  */
 static void json_parse_literal()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        switch (c) {
-        case ' ':
-        case '\r':
-        case '\n':
-        case '\t':
-        case ',':
-        case '}':
-        case ']':
-            json_unread(c);
-            return;
-        default:
-            json_putc(c);
-            break;
-        }
-    }
+	char c;
+	while ((c = json_getc()) != EOF) {
+		switch (c) {
+		case ' ':
+		case '\r':
+		case '\n':
+		case '\t':
+		case ',':
+		case '}':
+		case ']':
+			json_unread(c);
+			return;
+		default:
+			json_putc(c);
+			break;
+		}
+	}
 
 }
 
@@ -122,14 +123,14 @@ static void json_parse_literal()
  */
 static void json_parse_array()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        if (c == ']') {
-            break;
-        } else {
-            json_parse_value();
-        }
-    }
+	char c;
+	while ((c = json_getc()) != EOF) {
+		if (c == ']') {
+			break;
+		} else {
+			json_parse_value();
+		}
+	}
 }
 
 /*! \brief Parses a JSON value.
@@ -139,42 +140,42 @@ static void json_parse_array()
  */
 static void json_parse_value()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        switch (c) {
-        case '{':
-            json_unread(c);
-            json_parse_object();
-            return;
+	char c;
+	while ((c = json_getc()) != EOF) {
+		switch (c) {
+		case '{':
+			json_unread(c);
+			json_parse_object();
+			return;
 
-        case ':':
-        case ' ':
-        case '\r':
-        case '\n':
-        case '\t':
-            break;
+		case ':':
+		case ' ':
+		case '\r':
+		case '\n':
+		case '\t':
+			break;
 
-        case '[':
-            json_unread(c);
-            json_parse_array();
-            return;
+		case '[':
+			json_unread(c);
+			json_parse_array();
+			return;
 
-        case '\"':
-            /* Strings */
-            json_putdelim();
-            json_parse_string();
-            js.count++;
-            return;
+		case '\"':
+			/* Strings */
+			json_putdelim();
+			json_parse_string();
+			js.count++;
+			return;
 
-        default:
-            /* Literals */
-            json_unread(c);
-            json_putdelim();
-            json_parse_literal();
-            js.count++;
-            return;
-        }
-    }
+		default:
+			/* Literals */
+			json_unread(c);
+			json_putdelim();
+			json_parse_literal();
+			js.count++;
+			return;
+		}
+	}
 }
 
 /*! \brief Parses a JSON object structure.
@@ -183,22 +184,26 @@ static void json_parse_value()
  */
 static void json_parse_object()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        switch (c) {
-        case '{':
-            js.depth++;
-            break;
-        case '}':
-            js.depth--;
-            break;
-        case '\"':
-            json_match();
-            break;
-        default:
-            break;
-        }
-    }
+	int scape = 0;
+	char c;
+	while ((c = json_getc()) != EOF) {
+		switch (c) {
+		case '{':
+			js.depth++;
+			break;
+		case '}':
+			js.depth--;
+			break;
+		case '\"':
+			if (!scape) {
+				json_match();
+			}
+			break;
+		default:
+			break;
+		}
+		scape = c == '\\';
+	}
 }
 
 /*! \brief Skips input until object termination.
@@ -206,13 +211,28 @@ static void json_parse_object()
  */
 static void json_skip_obj()
 {
-    char c;
-    while ((c = json_getc()) != EOF) {
-        if (c == '}') {
-            json_unread(c);
-            break;
-        }
-    }
+	char c;
+	while ((c = json_getc()) != EOF) {
+		if (c == '}') {
+			json_unread(c);
+			break;
+		}
+	}
+}
+
+/*! \brief Skips input until string termination.
+ *
+ */
+static void json_skip_string()
+{
+	int scape = 0;
+	char c;
+	while ((c = json_getc()) != EOF) {
+		if (!scape && c == '\"') {
+			break;
+		}
+		scape = c == '\\';
+	}
 }
 
 /*! \brief Performs the property matching.
@@ -222,66 +242,96 @@ static void json_skip_obj()
  */
 static void json_match()
 {
-    if (js.depth < 1 || js.levels < js.depth || (js.depth > 1 && !js.matches[js.depth - 2])) {
-        json_skip_obj();
-        return;
-    }
-    const char *target = js.path[js.depth - 1];
-    int tlen = strlen(target);
-    char *name = (char *)malloc(tlen);
-    char c;
-    int i = 0;
+	int depth = (js.offset < js.depth) ? js.offset : js.depth;
 
-    while ((c = json_getc()) != EOF) {
-        if (c == '\"') {
-            if (target[0] == '*'
-                || (i == tlen && strncmp(name, target, tlen) == 0)) {
-                js.matches[js.depth - 1] = 1;
-                if (js.levels == js.depth) {
-                    json_parse_value();
-                }
-            } else {
-                js.matches[js.depth - 1] = 0;
-            }
-            break;
-        } else if (i < tlen) {
-            name[i] = c;
+	if (js.depth < 1
+	    || js.levels < depth
+	    || (depth > 1 && !js.matches[depth - 2])) {
+		json_skip_obj();
+		return;
+	}
+
+	const char *target = js.path[depth - 1];
+	int tlen = strlen(target);
+	char *name = (char *)malloc(tlen);
+	int all = 0;
+
+	if (tlen == 2 && target[0] == '*' && target[1] == '*') {
+        all = depth == js.levels;
+
+		if (!all) {
+			js.offset = depth + 1;
+			js.matches[depth - 1] = 1;
+			json_skip_string();
+			return;
+		} else {
+            js.offset = depth;
+            js.matches[depth] = 1;
         }
-        i++;
-    }
+	}
 
-    free(name);
+	char c;
+	int i = 0;
+	int scape = 0;
+
+	while ((c = json_getc()) != EOF) {
+		if (!scape && c == '\"') {
+			if (all || (tlen == 1 && target[0] == '*')
+			    || (i == tlen && strncmp(name, target, tlen) == 0)) {
+
+				if (!all) {
+					js.matches[depth - 1] = 1;
+				}
+
+				if (js.levels == depth) {
+					json_parse_value();
+				} else if(js.offset != INT_MAX) {
+					js.offset = depth + 1;
+				}
+
+			} else {
+				js.matches[depth - 1] = 0;
+			}
+			break;
+		} else if (i < tlen) {
+			name[i] = c;
+		}
+		scape = c == '\\';
+		i++;
+	}
+
+	free(name);
 }
 
 /*! \brief Parses a path expression.
  *
  * Tokenizes the given path and initializes the path levels array.
  *
- * \param the path expression
+ * \param const char *path the path expression
  */
 static void init_json_path(const char *path)
 {
-    char *token;
-    js.path = (char **)malloc(sizeof(char *));
+	char *token;
+	js.path = (char **)malloc(sizeof(char *));
 
-    char *s = (char *)malloc(strlen(path) + 1);
-    strcpy(s, path);
+	char *s = (char *)malloc(strlen(path) + 1);
+	strcpy(s, path);
 
-    token = strtok(s, PATH_DELIM);
-    if (token != NULL) {
-        js.path[0] = malloc(strlen(token) + 1);
-        strcpy(js.path[0], token);
-    }
-    int i = 1;
-    while ((token = strtok(NULL, PATH_DELIM)) != NULL) {
-        js.path = (char **)realloc(js.path, sizeof(char *) * (i + 1));
-        js.path[i] = malloc(strlen(token) + 1);
-        strcpy(js.path[i], token);
-        i++;
-    }
-    free(s);
+	token = strtok(s, PATH_DELIM);
+	if (token != NULL) {
+		js.path[0] = malloc(strlen(token) + 1);
+		strcpy(js.path[0], token);
+	}
+	int i = 1;
+	while ((token = strtok(NULL, PATH_DELIM)) != NULL) {
+		js.path = (char **)realloc(js.path, sizeof(char *) * (i + 1));
+		js.path[i] = malloc(strlen(token) + 1);
+		strcpy(js.path[i], token);
+		i++;
+	}
+	free(s);
 
-    js.levels = i;
+	js.levels = i;
 }
 
 /*! \brief Releases JSON walk allocated resources.
@@ -290,11 +340,11 @@ static void init_json_path(const char *path)
  */
 static void json_free()
 {
-    for (int i = 0; i < js.levels; i++) {
-        free(js.path[i]);
-    }
-    free(js.path);
-    free(js.matches);
+	for (int i = 0; i < js.levels; i++) {
+		free(js.path[i]);
+	}
+	free(js.path);
+	free(js.matches);
 }
 
 /*! \brief Initializes JSON walk.
@@ -302,16 +352,17 @@ static void json_free()
  * Initializes the structure for a given expression path and
  * stream. Sets new line as default delimiter.
  *
- * \param char* path the path expression.
+ * \param const char* path the path expression.
  * \param FILE* the input stream.
  */
 static void json_init(const char *path, FILE * stream)
 {
-    init_json_path(path);
-    js.delimiter = '\n';
-    js.in = stream;
-    js.out = stdout;
-    js.matches = (int *)malloc(sizeof(int) * js.levels);
+	init_json_path(path);
+	js.delimiter = '\n';
+	js.in = stream;
+	js.out = stdout;
+	js.offset = INT_MAX;
+	js.matches = (int *)malloc(sizeof(int) * js.levels);
 }
 
 /*! \brief Gets the underlying JSON walker.
@@ -320,7 +371,7 @@ static void json_init(const char *path, FILE * stream)
  */
 json_walker_t json_walker()
 {
-    return js;
+	return js;
 }
 
 /*! \brief Prints matching values from a JSON input for a given path expression.
@@ -329,27 +380,27 @@ json_walker_t json_walker()
  */
 int json_walk(const char *filename, char delimiter, const char *path_expr)
 {
-    FILE *file = NULL;
+	FILE *file = NULL;
 
-    if (filename == NULL) {
-        file = stdin;
-    } else {
-        file = fopen(filename, "r");
-    }
+	if (filename == NULL) {
+		file = stdin;
+	} else {
+		file = fopen(filename, "r");
+	}
 
-    if (file != NULL) {
-        json_init(path_expr, file);
-        js.delimiter = delimiter;
-        json_parse_object();
-        json_free();
+	if (file != NULL) {
+		json_init(path_expr, file);
+		js.delimiter = delimiter;
+		json_parse_object();
+		json_free();
 
-        if (filename != NULL) {
-            fclose(file);
-        }
-    } else {
-        perror("The following error occurred");
-        exit(EXIT_FAILURE);
-    }
+		if (filename != NULL) {
+			fclose(file);
+		}
+	} else {
+		perror("The following error occurred");
+		exit(EXIT_FAILURE);
+	}
 
-    return js.count;
+	return js.count;
 }
