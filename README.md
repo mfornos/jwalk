@@ -49,14 +49,14 @@ Building from source
 
 Autotools are used to ease the building process.
 
-1. Clone jwalk git repository.
-2. Run autogen.sh
+1. Clone jwalk git repository: `git clone https://github.com/mfornos/jwalk.git`
+2. Run `./autogen.sh`
 3. Generate make files suited for your system:
-     ./configure
+     `./configure`
 4. Compile:
-     make
+     `make`
 5. Install jwalk:
-     sudo make install
+     `sudo make install`
 
 That's all.
 

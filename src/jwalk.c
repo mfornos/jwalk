@@ -47,7 +47,7 @@ static char json_getc()
  * Puts the given character in the input stream for
  * reprocessing.
  *
- * \param char c the character to be unread.
+ * \param c the character to be unread.
  */
 static void json_unread(char c)
 {
@@ -58,7 +58,7 @@ static void json_unread(char c)
  *
  * Prints the given character to the selected stream.
  *
- * \param char c the character to be printed.
+ * \param c the character to be printed.
  */
 static void json_putc(char c)
 {
@@ -307,7 +307,7 @@ static void json_match()
  *
  * Tokenizes the given path and initializes the path levels array.
  *
- * \param const char *path the path expression
+ * \param path the path expression
  */
 static void init_json_path(const char *path)
 {
@@ -352,8 +352,8 @@ static void json_free()
  * Initializes the structure for a given expression path and
  * stream. Sets new line as default delimiter.
  *
- * \param const char* path the path expression.
- * \param FILE* the input stream.
+ * \param path the path expression.
+ * \param stream the input stream.
  */
 static void json_init(const char *path, FILE * stream)
 {
