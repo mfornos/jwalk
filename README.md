@@ -19,8 +19,9 @@ Usage
     jwalk [--delimiter <char>] [--file <file_name>] <expression>
 
 Examples:
-    jwalk "*.name" < file.json
-    gzcat big.json.gz | jwalk "*.name"
+    jwalk some.path.keys < file.json
+    jwalk "**.name" < file.json
+    gzcat big.json.gz | jwalk "root.*.name"
 
 Options:
     -d <char>, --delimiter <char>
