@@ -10,27 +10,51 @@ Jwalk extracts JSON values (literals, strings and array values) from standard in
 Examples
 --------
 
-[TBD]
+Given the following JSON document:
+
+```
+```
+
+### Extract values for properties named "my_prop"
+
+```
+```
+
+Concatenate the values with underscores.
+
+```
+```
+
+### Extract all values matching the path "a.b.c.my_prop"
+
+```
+```
+
+### Inspect the JSON structure
+
+```
+```
 
 Usage
 -----
 
 ```
-    jwalk [--delimiter <char>] [--file <file_name>] <expression>
-
+Usage:
+    jwalk [--inspect] [--delimiter <char>] [--file <file_name>] <expression>
 Examples:
+    jwalk -i < file.json
     jwalk some.path.keys < file.json
     jwalk "**.name" < file.json
     gzcat big.json.gz | jwalk "root.*.name"
-
 Options:
+    -i, --inspect
+     Sets inspection mode. This mode dumps the JSON keys as a nested list, expression is not required.
     -d <char>, --delimiter <char>
      The <char> delimiter that separates matched values; e.g.: -d $'\t'
     -f <file_name>, --file <file_name>
      The name of a file containing JSON text
     <expression>
-     A path to traverse the JSON tree; e.g.: house.room.name
-
+     A path to traverse the JSON tree; e.g.: house.room.name, "**.name", "a.*.c"
 Notes:
     'stdin' is the default input source
 ```
@@ -48,7 +72,7 @@ Side note, there is no aim to support JSON-Path nor XPath syntax. The idea is to
 Building from source
 --------------------
 
-Autotools are used to ease the building process.
+[Autotools](http://www.gnu.org/software/automake/manual/html_node/index.html#Top) are used to ease the building process.
 
 1. Clone jwalk git repository: `git clone https://github.com/mfornos/jwalk.git`
 2. Run `./autogen.sh`
@@ -62,8 +86,9 @@ Autotools are used to ease the building process.
 That's all.
 
 
-Curiosities
------------
+Curiosities & References
+------------------------
 
-* http://www.urbandictionary.com/define.php?term=j+walk
+* [JSON specification](http://json.org/)
+* [J Walk @Urban dictionary](http://www.urbandictionary.com/define.php?term=j+walk)
 

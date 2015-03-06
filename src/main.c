@@ -26,24 +26,27 @@
 
 static int version_flag;
 
-void usage(void)
+void usage()
 {
     puts("Usage:\n"
-    "\tjwalk [--delimiter <char>] [--file <file_name>] <expression>\n"
+         "\tjwalk [--inspect] [--delimiter <char>] [--file <file_name>] <expression>\n"
          "Examples:\n"
+         "\tjwalk -i < file.json\n"
          "\tjwalk some.path.keys < file.json\n"
          "\tjwalk \"**.name\" < file.json\n"
          "\tgzcat big.json.gz | jwalk \"root.*.name\"\n"
          "Options:\n"
+         "\t-i, --inspect\n\t Sets inspection mode. This mode dumps the JSON keys as a nested list,"
+         " expression is not required.\n"
          "\t-d <char>, --delimiter <char>\n\t The <char> delimiter that separates matched values; e.g.: -d $'\\t'\n"
          "\t-f <file_name>, --file <file_name>\n\t The name of a file containing JSON text\n"
-         "\t<expression>\n\t A path to traverse the JSON tree; e.g.: house.room.name\n"
+         "\t<expression>\n\t A path to traverse the JSON tree; e.g.: house.room.name, \"**.name\", \"a.*.c\"\n"
          "Notes:\n"
          "\t'stdin' is the default input source");
     exit(EXIT_FAILURE);
 }
 
-void version(void)
+void version()
 {
     printf("%s version %s\n", NAME, VERSION);
     exit(EXIT_SUCCESS);
@@ -55,26 +58,30 @@ int main(int argc, char **argv)
     char *path_expr = NULL;
     char delimiter = '\n';
     int option_index = 0;
+    int inspect = 0;
     int c;
 
     if (argc < MIN_ARGS_REQUIRED) {
         usage();
     }
-
     static struct option long_options[] =
     {
         {"version", no_argument, &version_flag, 1},
         {"help", optional_argument, 0, 'h'},
+        {"inspect", optional_argument, 0, 'i'},
         {"file", optional_argument, 0, 'f'},
         {"delimiter", optional_argument, 0, 'd'}
     };
 
-    while ((c = getopt_long(argc, argv, "hf:d:",
+    while ((c = getopt_long(argc, argv, "hif:d:",
                 long_options, &option_index)) != -1) {
 
         switch (c) {
         case 'h':
             usage();
+        case 'i':
+            inspect = 1;
+            break;
         case 'f':
             filename = optarg;
             break;
@@ -84,17 +91,19 @@ int main(int argc, char **argv)
         }
     }
 
-    if(version_flag) {
+    if (version_flag) {
         version();
     }
-
     if (optind < argc) {
         path_expr = argv[optind++];
-    } else {
+    } else if (!inspect) {
         usage();
     }
-
-    json_walk(filename, path_expr, delimiter);
+    if (inspect) {
+        json_inspect(filename);
+    } else {
+        json_walk(filename, path_expr, delimiter);
+    }
 
     exit(EXIT_SUCCESS);
 }

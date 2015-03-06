@@ -22,6 +22,8 @@
 #define NAME    "jwalk"
 #define VERSION "0.0.1"
 
+typedef void (*on_key)();
+
 /*! \brief JSON Walker structure.
  *
  *  Holds the configuration and state to traverse a JSON object tree.
@@ -31,6 +33,7 @@ typedef struct json_walker_s {
     int levels;
     int offset;
     int count;
+    on_key key_func;
     char delimiter;
     FILE *in;
     FILE *out;
@@ -51,6 +54,14 @@ typedef struct json_walker_s {
  * \return the number of printed values.
  */
 int json_walk(const char *filename, const char *path_expr, char delimiter);
+
+/*! \brief Prints the JSON keys as a nested list.
+ *
+ * \param filename the file name containing the JSON data. If NULL standard input will be used.
+ *
+ * \return the number of keys.
+ */
+int json_inspect(const char *filename);
 
 /*! \brief Gets the underlying JSON walker.
  *

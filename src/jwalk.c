@@ -29,6 +29,7 @@ static json_walker_t js;
 
 static void json_parse_value();
 static void json_parse_object();
+static void json_dump_keys();
 static void json_match();
 
 /*! \brief Reads a character.
@@ -194,7 +195,7 @@ static void json_parse_object()
             js.depth--;
             break;
         case '\"':
-            json_match();
+            js.key_func();
             break;
         default:
             break;
@@ -231,6 +232,99 @@ static void json_skip_string()
     }
 }
 
+/*! \brief Skips json values, wildly.
+ *
+ */
+static void json_skip_value()
+{
+    char c;
+    while ((c = json_getc()) != EOF) {
+        switch (c) {
+        case '\"':
+            json_skip_string();
+            break;
+        case ',':
+        case ']':
+            return;
+        case '{':
+            js.depth++;
+            return;
+        case '}':
+            js.depth--;
+            return;
+        default:
+            break;
+        }
+    }
+}
+
+/*! \brief Prints the depth level as Markdown indentation.
+ *
+ */
+static void json_indent_level()
+{
+    for (int i = 0; i < js.depth - 1; i++) {
+        json_putc(' ');
+        json_putc(' ');
+    }
+
+    char num[(sizeof(int) * CHAR_BIT - 1) / 3 + 3];
+    sprintf(num, "%d", js.depth);
+    int n = strlen(num);
+    for (int i = 0; i < n; i++) {
+        json_putc(num[i]);
+    }
+    json_putc('.');
+    json_putc(' ');
+}
+
+/*! \brief Dumps JSON keys.
+ *
+ * Expects a stream pointer positioned at the begining of a property key.
+ *
+ */
+static void json_dump_keys()
+{
+    char c;
+    int scape = 0;
+
+    if (js.count > 0) {
+        json_putc('\n');
+    }
+    json_indent_level();
+
+    while ((c = json_getc()) != EOF) {
+        if (!scape && c == '\"') {
+            js.count++;
+            break;
+        } else {
+            json_putc(c);
+        }
+        scape = c == '\\';
+    }
+
+    while ((c = json_getc()) != EOF) {
+        switch (c) {
+        case ':':
+            json_skip_value();
+            break;
+
+        case '\"':
+            json_dump_keys();
+            break;
+        case '{':
+            js.depth++;
+            break;
+        case '}':
+            js.depth--;
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
 /*! \brief Performs the property matching.
  *
  * Matches the current path level token against a JSON property name.
@@ -246,7 +340,6 @@ static void json_match()
         json_skip_obj();
         return;
     }
-
     const char *target = js.path[depth - 1];
     int tlen = strlen(target);
     char *name = (char *)malloc(tlen);
@@ -265,7 +358,6 @@ static void json_match()
             js.matches[depth] = 1;
         }
     }
-
     char c;
     int i = 0;
     int scape = 0;
@@ -278,13 +370,11 @@ static void json_match()
                 if (!all) {
                     js.matches[depth - 1] = 1;
                 }
-
                 if (js.levels == depth) {
                     json_parse_value();
-                } else if(js.offset != INT_MAX) {
+                } else if (js.offset != INT_MAX) {
                     js.offset = depth + 1;
                 }
-
             } else {
                 js.matches[depth - 1] = 0;
             }
@@ -345,36 +435,27 @@ static void json_free()
 
 /*! \brief Initializes JSON walk.
  *
- * Initializes the structure for a given expression path and
- * stream. Sets new line as default delimiter.
+ * Initializes the json_walker structure for a given expression path.
  *
  * \param path the path expression.
- * \param stream the input stream.
  */
-static void json_init(const char *path, FILE * stream)
+static void json_init(const char *path)
 {
-    init_json_path(path);
-    js.delimiter = '\n';
-    js.in = stream;
+    if (path != NULL) {
+        init_json_path(path);
+        js.matches = (int *)malloc(sizeof(int) * js.levels);
+    }
     js.out = stdout;
+    js.key_func = &json_match;
     js.offset = INT_MAX;
-    js.matches = (int *)malloc(sizeof(int) * js.levels);
 }
 
-/*! \brief Gets the underlying JSON walker.
+/*! \brief Parses a JSON input stream.
  *
- * \sa jwalk.h for details.
+ * \param filename the file name containing the JSON data. If NULL standard input will be used.
+ * \return the number of printed items.
  */
-json_walker_t json_walker()
-{
-    return js;
-}
-
-/*! \brief Prints matching values from a JSON input for a given path expression.
- *
- * \sa jwalk.h for details.
- */
-int json_walk(const char *filename, const char *path_expr, char delimiter)
+static int json_parse_stream(const char *filename)
 {
     FILE *file = NULL;
 
@@ -385,8 +466,8 @@ int json_walk(const char *filename, const char *path_expr, char delimiter)
     }
 
     if (file != NULL) {
-        json_init(path_expr, file);
-        js.delimiter = delimiter;
+
+        js.in = file;
         json_parse_object();
         json_free();
 
@@ -399,4 +480,35 @@ int json_walk(const char *filename, const char *path_expr, char delimiter)
     }
 
     return js.count;
+}
+
+/*! \brief Gets the underlying JSON walker.
+ *
+ * \sa jwalk.h for details.
+ */
+json_walker_t json_walker()
+{
+    return js;
+}
+
+/*! \brief Prints the JSON keys as a nested list.
+ *
+ * \sa jwalk.h for details.
+ */
+int json_inspect(const char *filename)
+{
+    json_init(NULL);
+    js.key_func = &json_dump_keys;
+    return json_parse_stream(filename);
+}
+
+/*! \brief Prints matching values from a JSON input for a given path expression.
+ *
+ * \sa jwalk.h for details.
+ */
+int json_walk(const char *filename, const char *path_expr, char delimiter)
+{
+    json_init(path_expr);
+    js.delimiter = delimiter;
+    return json_parse_stream(filename);
 }
