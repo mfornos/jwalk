@@ -145,6 +145,7 @@ static void json_parse_value()
     while ((c = json_getc()) != EOF) {
         switch (c) {
         case '{':
+            /* Objects */
             json_unread(c);
             json_parse_object();
             return;
@@ -154,9 +155,11 @@ static void json_parse_value()
         case '\r':
         case '\n':
         case '\t':
+            /* Ignore */
             break;
 
         case '[':
+            /* Arrays */
             json_unread(c);
             json_parse_array();
             return;
@@ -437,7 +440,7 @@ static void init_json_path(const char *path)
         strcpy(js.path[i], token);
         i++;
     }
-    
+
     free(s);
 
     js.levels = i;

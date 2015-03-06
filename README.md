@@ -81,11 +81,11 @@ $ jwalk "**.id" < t.json
 1004
 ```
 
-### Join values with underscores
+### Join values with a custom delimiter
 
 ```
-$ jwalk -d '-' name < t.json
-Cake-Raised-Old Fashioned
+$ jwalk -d '_' name < t.json
+Cake_Raised_Old Fashioned
 ```
 
 ### Inspect JSON structure
