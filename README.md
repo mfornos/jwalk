@@ -124,7 +124,8 @@ Examples:
     gzcat big.json.gz | jwalk "root.*.name"
 Options:
     -i, --inspect
-     Sets inspection mode. This mode dumps the JSON keys as a nested list, expression is not required.
+     Sets inspection mode. This mode dumps the JSON keys as a nested list,
+     expression is not required.
     -d <char>, --delimiter <char>
      The <char> delimiter that separates matched values; e.g.: -d $'\t'
     -f <file_name>, --file <file_name>

@@ -37,7 +37,7 @@ void usage()
          "\tgzcat big.json.gz | jwalk \"root.*.name\"\n"
          "Options:\n"
          "\t-i, --inspect\n\t Sets inspection mode. This mode dumps the JSON keys as a nested list,"
-         " expression is not required.\n"
+         "\n\t expression is not required.\n"
          "\t-d <char>, --delimiter <char>\n\t The <char> delimiter that separates matched values; e.g.: -d $'\\t'\n"
          "\t-f <file_name>, --file <file_name>\n\t The name of a file containing JSON text\n"
          "\t<expression>\n\t A path to traverse the JSON tree; e.g.: house.room.name, \"**.name\", \"a.*.c\"\n"
