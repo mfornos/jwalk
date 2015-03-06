@@ -19,11 +19,11 @@ Given the following JSON document:
     "batters":{
       "batter":[
         {
-          "id":"1001",
+          "id": 1001,
           "type":"Regular"
         },
         {
-          "id":"1003",
+          "id": 1003,
           "type":"Blueberry"
         }
       ]
@@ -35,11 +35,11 @@ Given the following JSON document:
     "batters":{
       "batter":[
         {
-          "id":"1002",
+          "id": 1002,
           "type":"Chocolate"
         },
         {
-          "id":"1004",
+          "id": 1004,
           "type":"Devil's Food"
         }
       ]
@@ -88,7 +88,7 @@ $ jwalk -d '-' name < t.json
 Cake-Raised-Old Fashioned
 ```
 
-### Inspect the JSON structure
+### Inspect JSON structure
 
 ```
 $ jwalk -i < t.json
