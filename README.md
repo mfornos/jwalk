@@ -13,26 +13,102 @@ Examples
 Given the following JSON document:
 
 ```
+[
+  {
+    "name":"Cake",
+    "batters":{
+      "batter":[
+        {
+          "id":"1001",
+          "type":"Regular"
+        },
+        {
+          "id":"1003",
+          "type":"Blueberry"
+        }
+      ]
+    }
+  },
+  {
+    "type":"donut",
+    "name":"Raised",
+    "batters":{
+      "batter":[
+        {
+          "id":"1002",
+          "type":"Chocolate"
+        },
+        {
+          "id":"1004",
+          "type":"Devil's Food"
+        }
+      ]
+    }
+  },
+  {
+    "type":"donut",
+    "name":"Old Fashioned"
+  }
+]
 ```
 
-### Extract values for properties named "my_prop"
+### Extract all first-level names
 
 ```
+$ jwalk name  < t.json
+Cake
+Raised
+Old Fashioned
 ```
 
-Concatenate the values with underscores.
+### Extract values matching the path "batters.batter.type"
 
 ```
+$ jwalk batters.batter.type < t.json
+Regular
+Blueberry
+Chocolate
+Devil's Food
 ```
 
-### Extract all values matching the path "a.b.c.my_prop"
+### Extract all nested identifiers
 
 ```
+$ jwalk "**.id" < t.json
+1001
+1003
+1002
+1004
+```
+
+### Join values with underscores.
+
+```
+jwalk -d '-' name < t.json
+Cake-Raised-Old Fashioned
 ```
 
 ### Inspect the JSON structure
 
 ```
+$ jwalk -i < t.json
+1. name
+1. batters
+  2. batter
+    3. id
+    3. type
+    3. id
+    3. type
+1. type
+1. name
+1. batters
+  2. batter
+    3. id
+    3. type
+    3. id
+    3. type
+1. type
+1. name
 ```
 
 Usage
@@ -43,7 +119,7 @@ Usage:
     jwalk [--inspect] [--delimiter <char>] [--file <file_name>] <expression>
 Examples:
     jwalk -i < file.json
-    jwalk some.path.keys < file.json
+    jwalk some.path.key < file.json
     jwalk "**.name" < file.json
     gzcat big.json.gz | jwalk "root.*.name"
 Options:
@@ -86,7 +162,7 @@ Building from source
 That's all.
 
 
-Curiosities & References
+References & Curiosities
 ------------------------
 
 * [JSON specification](http://json.org/)

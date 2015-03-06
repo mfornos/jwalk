@@ -1,30 +1,22 @@
 #!/usr/bin/env bash
 
-sample=assets/outputs/2.out
-check=assets/outputs/2.out.$$
+. test.sh
 
-function fail () {
-	#rm $check
-	exit -1
-}
+given=assets/outputs/2.out.$$
+expect=assets/outputs/2.out
 
-function skip () {
-	exit 77
-}
+sample "**.useJSP" servlet.json
+sample "**.servlet.*.useJSP" servlet.json
+sample "**.servlet.**.useJSP" servlet.json
+sample "**" servlet.json
 
-../src/jwalk "**.useJSP" < assets/inputs/servlet.json > $check
-../src/jwalk "**.servlet.*.useJSP" < assets/inputs/servlet.json >> $check
-../src/jwalk "**.servlet.**.useJSP" < assets/inputs/servlet.json >> $check
-../src/jwalk "**" < assets/inputs/servlet.json >> $check
-../src/jwalk "**.name" < assets/inputs/widgets.json >> $check
-../src/jwalk "**.c.**.e" < assets/inputs/rare.json >> $check
-../src/jwalk "**.e" < assets/inputs/rare.json >> $check
-../src/jwalk "**.z.**.e" < assets/inputs/rare.json >> $check
-../src/jwalk "**.b.c.d.e" < assets/inputs/rare.json >> $check
-../src/jwalk '*.\"1\"2\"3\"' < assets/inputs/rare.json >> $check
-../src/jwalk '**' < assets/inputs/rare.json >> $check
+sample "**.name" widgets.json
 
-cmp --silent $sample $check || fail
+sample "**.c.**.e" rare.json
+sample "**.e" rare.json
+sample "**.z.**.e" rare.json
+sample "**.b.c.d.e" rare.json
+sample '*.\"1\"2\"3\"' rare.json
+sample "**" rare.json
 
-rm $check
-exit 0
+assert

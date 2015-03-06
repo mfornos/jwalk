@@ -1,0 +1,40 @@
+[
+  {
+    "id":"0001",
+    "name":"Cake",
+    "batters":{
+      "batter":[
+        {
+          "id":"1001",
+          "type":"Regular"
+        },
+        {
+          "id":"1003",
+          "type":"Blueberry"
+        }
+      ]
+    }
+  },
+  {
+    "id":"0002",
+    "type":"donut",
+    "name":"Raised",
+    "batters":{
+      "batter":[
+        {
+          "id":"1002",
+          "type":"Chocolate"
+        },
+        {
+          "id":"1004",
+          "type":"Devil's Food"
+        }
+      ]
+    }
+  },
+  {
+    "id":"0003",
+    "type":"donut",
+    "name":"Old Fashioned"
+  }
+]

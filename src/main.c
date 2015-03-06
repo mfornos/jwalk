@@ -32,7 +32,7 @@ void usage()
          "\tjwalk [--inspect] [--delimiter <char>] [--file <file_name>] <expression>\n"
          "Examples:\n"
          "\tjwalk -i < file.json\n"
-         "\tjwalk some.path.keys < file.json\n"
+         "\tjwalk some.path.key < file.json\n"
          "\tjwalk \"**.name\" < file.json\n"
          "\tgzcat big.json.gz | jwalk \"root.*.name\"\n"
          "Options:\n"

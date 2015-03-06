@@ -1,34 +1,28 @@
 #!/usr/bin/env bash
 
-sample=assets/outputs/1.out
-check=assets/outputs/1.out.$$
+. test.sh
 
-function fail () {
-	#rm $check
-	exit -1
-}
+given=assets/outputs/1.out.$$
+expect=assets/outputs/1.out
 
-function skip () {
-	exit 77
-}
+sample "web-app.servlet.servlet-name" servlet.json
+sample "web-app.*.servlet-name" servlet.json
+sample "web-app" servlet.json
+sample "\t" servlet.json
+sample "web-app.servlet.*" servlet.json
 
-../src/jwalk "web-app.servlet.servlet-name" < assets/inputs/servlet.json > $check
-../src/jwalk "web-app.*.servlet-name" < assets/inputs/servlet.json >> $check
-../src/jwalk "web-app" < assets/inputs/servlet.json >> $check
-../src/jwalk "\t" < assets/inputs/servlet.json >> $check
-../src/jwalk "web-app.servlet.*" < assets/inputs/servlet.json >> $check
-../src/jwalk "simple" < assets/inputs/simple.json >> $check
-../src/jwalk "simple.bla.*" < assets/inputs/simple.json >> $check
-../src/jwalk "simple.*.bla" < assets/inputs/simple.json >> $check
-../src/jwalk "widget.debug" < assets/inputs/widgets.json >> $check
-../src/jwalk "widget.deb" < assets/inputs/widgets.json >> $check
-../src/jwalk "*" < assets/inputs/widgets.json >> $check
-../src/jwalk "" < assets/inputs/widgets.json >> $check
-../src/jwalk "widget.*.name" < assets/inputs/widgets.json >> $check
-../src/jwalk "widget.window.name" < assets/inputs/widgets.json >> $check
-../src/jwalk "widget.window.na" < assets/inputs/widgets.json >> $check
+sample "simple" simple.json
+sample "simple.bla.*" simple.json
+sample "simple.*.bla" simple.json
 
-cmp --silent $sample $check || fail
+sample "widget.debug" widgets.json
+sample "widget.deb" widgets.json
+sample "*" widgets.json
+sample "" widgets.json
+sample "widget.*.name" widgets.json
+sample "widget.window.name" widgets.json
+sample "widget.window.na" widgets.json
 
-rm $check
-exit 0
+sample "name" donuts.json
+
+assert

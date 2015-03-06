@@ -203,6 +203,19 @@ static void json_parse_object()
     }
 }
 
+/*! \brief Skips input until array termination.
+ *
+ */
+static void json_skip_array()
+{
+    char c;
+    while ((c = json_getc()) != EOF) {
+        if (c == ']') {
+            break;
+        }
+    }
+}
+
 /*! \brief Skips input until object termination.
  *
  */
@@ -210,9 +223,13 @@ static void json_skip_obj()
 {
     char c;
     while ((c = json_getc()) != EOF) {
-        if (c == '}') {
-            json_unread(c);
+        switch (c) {
+        case '[':
+            json_skip_array();
             break;
+        case '}':
+            json_unread(c);
+            return;
         }
     }
 }
@@ -312,9 +329,11 @@ static void json_dump_keys()
         case '\"':
             json_dump_keys();
             break;
+
         case '{':
             js.depth++;
             break;
+
         case '}':
             js.depth--;
             break;
@@ -340,6 +359,7 @@ static void json_match()
         json_skip_obj();
         return;
     }
+
     const char *target = js.path[depth - 1];
     int tlen = strlen(target);
     char *name = (char *)malloc(tlen);
@@ -358,6 +378,7 @@ static void json_match()
             js.matches[depth] = 1;
         }
     }
+
     char c;
     int i = 0;
     int scape = 0;
@@ -408,6 +429,7 @@ static void init_json_path(const char *path)
         js.path[0] = malloc(strlen(token) + 1);
         strcpy(js.path[0], token);
     }
+
     int i = 1;
     while ((token = strtok(NULL, PATH_DELIM)) != NULL) {
         js.path = (char **)realloc(js.path, sizeof(char *) * (i + 1));
@@ -415,6 +437,7 @@ static void init_json_path(const char *path)
         strcpy(js.path[i], token);
         i++;
     }
+    
     free(s);
 
     js.levels = i;
