@@ -24,6 +24,7 @@
 
 #define MIN_ARGS_REQUIRED 0
 
+static int version_flag;
 
 void usage(void)
 {
@@ -42,6 +43,12 @@ void usage(void)
     exit(EXIT_FAILURE);
 }
 
+void version(void)
+{
+    printf("%s version %s\n", NAME, VERSION);
+    exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char **argv)
 {
     char *filename = NULL;
@@ -53,8 +60,10 @@ int main(int argc, char **argv)
     if (argc < MIN_ARGS_REQUIRED) {
         usage();
     }
+
     static struct option long_options[] =
     {
+        {"version", no_argument, &version_flag, 1},
         {"help", optional_argument, 0, 'h'},
         {"file", optional_argument, 0, 'f'},
         {"delimiter", optional_argument, 0, 'd'}
@@ -72,9 +81,11 @@ int main(int argc, char **argv)
         case 'd':
             delimiter = optarg[0];
             break;
-        default:
-            abort();
         }
+    }
+
+    if(version_flag) {
+        version();
     }
 
     if (optind < argc) {

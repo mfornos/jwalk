@@ -184,7 +184,6 @@ static void json_parse_value()
  */
 static void json_parse_object()
 {
-    int scape = 0;
     char c;
     while ((c = json_getc()) != EOF) {
         switch (c) {
@@ -195,14 +194,11 @@ static void json_parse_object()
             js.depth--;
             break;
         case '\"':
-            if (!scape) {
-                json_match();
-            }
+            json_match();
             break;
         default:
             break;
         }
-        scape = c == '\\';
     }
 }
 

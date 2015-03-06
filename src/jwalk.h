@@ -19,6 +19,7 @@
 */
 #include <stdio.h>
 
+#define NAME    "jwalk"
 #define VERSION "0.0.1"
 
 /*! \brief JSON Walker structure.
