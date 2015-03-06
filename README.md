@@ -12,7 +12,7 @@ Examples
 
 Given the following JSON document:
 
-```
+```json
 [
   {
     "name":"Cake",
@@ -52,7 +52,7 @@ Given the following JSON document:
 ]
 ```
 
-### Extract all first-level names
+### Extract first-level names
 
 ```
 $ jwalk name  < t.json
@@ -81,10 +81,10 @@ $ jwalk "**.id" < t.json
 1004
 ```
 
-### Join values with underscores.
+### Join values with underscores
 
 ```
-jwalk -d '-' name < t.json
+$ jwalk -d '-' name < t.json
 Cake-Raised-Old Fashioned
 ```
 
