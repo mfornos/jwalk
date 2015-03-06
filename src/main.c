@@ -94,7 +94,7 @@ int main(int argc, char **argv)
         usage();
     }
 
-    json_walk(filename, delimiter, path_expr);
+    json_walk(filename, path_expr, delimiter);
 
     exit(EXIT_SUCCESS);
 }

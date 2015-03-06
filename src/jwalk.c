@@ -374,7 +374,7 @@ json_walker_t json_walker()
  *
  * \sa jwalk.h for details.
  */
-int json_walk(const char *filename, char delimiter, const char *path_expr)
+int json_walk(const char *filename, const char *path_expr, char delimiter)
 {
     FILE *file = NULL;
 

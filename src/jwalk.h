@@ -45,12 +45,12 @@ typedef struct json_walker_s {
  * delimiter.
  *
  * \param filename the file name containing the JSON data. If NULL standard input will be used.
- * \param delimiter the delimiter to concatenate output values.
  * \param path_expr the path traversal expression.
+ * \param delimiter the delimiter to concatenate output values.
  *
  * \return the number of printed values.
  */
-int json_walk(const char *filename, char delimiter, const char *path_expr);
+int json_walk(const char *filename, const char *path_expr, char delimiter);
 
 /*! \brief Gets the underlying JSON walker.
  *
