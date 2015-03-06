@@ -36,11 +36,11 @@ Given the following JSON document:
       "batter":[
         {
           "id": 1002,
-          "type":"Chocolate"
+          "type": "Chocolate"
         },
         {
           "id": 1004,
-          "type":"Devil's Food"
+          "type": "Devil's Food"
         }
       ]
     }
@@ -55,7 +55,7 @@ Given the following JSON document:
 ### Extract first-level names
 
 ```
-$ jwalk name  < t.json
+$ jwalk name < t.json
 Cake
 Raised
 Old Fashioned

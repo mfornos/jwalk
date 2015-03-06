@@ -22,8 +22,8 @@
     "batters":{
       "batter":[
         {
-          "id":1002,
-          "type":"Chocolate"
+          "id": 1002,
+          "type":   "Chocolate"
         },
         {
           "id": 1004,
